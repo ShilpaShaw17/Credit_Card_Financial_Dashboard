@@ -2,6 +2,9 @@
 
 -- 0. Create a database 
 CREATE DATABASE ccdb;
+GO
+USE ccdb;
+GO
 
 -- 1. Create cc_detail table
 
@@ -27,7 +30,7 @@ CREATE TABLE cc_detail (
 );
 
 
--- 2. Create cc_detail table
+-- 2. Create cust_detail table
 
 CREATE TABLE cust_detail (
     Client_Num INT,
@@ -51,19 +54,23 @@ CREATE TABLE cust_detail (
 -- 3. Copy csv data into SQL (remember to update the file name and file location in below query)
 
 -- copy cc_detail table
+-- Import data into cc_detail table
+BULK INSERT cc_detail
+FROM 'D:\credit_card.csv'
+WITH (
+    FIELDTERMINATOR = ',',
+    ROWTERMINATOR = '\n',
+    FIRSTROW = 2
+);
 
-COPY cc_detail
-FROM 'D:\credit_card.csv' 
-DELIMITER ',' 
-CSV HEADER;
-
-
--- copy cust_detail table
-
-COPY cust_detail
-FROM 'D:\customer.csv' 
-DELIMITER ',' 
-CSV HEADER;
+-- Import data into cust_detail table
+BULK INSERT cust_detail
+FROM 'D:\customer.csv'
+WITH (
+    FIELDTERMINATOR = ',',
+    ROWTERMINATOR = '\n',
+    FIRSTROW = 2
+);
 
 
 
@@ -74,7 +81,7 @@ CSV HEADER;
 -- Check the Data in Your CSV File: Ensure date column values are formatted correctly and are in a valid format that PostgreSQL can recognize (e.g., YYYY-MM-DD). And correct any incorrect or missing date values in the CSV file. 
    -- or
 -- Update the Datestyle Setting: Set the datestyle explicitly for your session using the following command:
-SET datestyle TO 'ISO, DMY';
+SET DATEFORMAT DMY;
 
 -- Now, try to COPY the csv files!
 
@@ -83,16 +90,22 @@ SET datestyle TO 'ISO, DMY';
 
 -- copy additional data (week-53) in cc_detail table
 
-COPY cc_detail
-FROM 'D:\cc_add.csv' 
-DELIMITER ',' 
-CSV HEADER;
+BULK INSERT cc_detail
+FROM 'D:\cc_add.csv'
+WITH (
+    FIELDTERMINATOR = ',',
+    ROWTERMINATOR = '\n',
+    FIRSTROW = 2
+);
 
 
 -- copy additional data (week-53) in cust_detail table (remember to update the file name and file location in below query)
 
-COPY cust_detail
-FROM 'D:\cust_add.csv' 
-DELIMITER ',' 
-CSV HEADER;
+BULK INSERT cust_detail
+FROM 'D:\cust_add.csv'
+WITH (
+    FIELDTERMINATOR = ',',
+    ROWTERMINATOR = '\n',
+    FIRSTROW = 2
+);
 
